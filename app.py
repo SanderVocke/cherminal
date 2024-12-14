@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, Response, abort
 from flask_httpauth import HTTPBasicAuth
-from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 import subprocess
 import sys
 import argparse
@@ -25,7 +25,7 @@ if password_file:
     with open(password_file, 'r') as f:
         for line in f:
             user, pwd_hash = line.strip().split(':')
-            users[user] = pwd_hash
+            users[user] = generate_password_hash(pwd_hash)
 
 @auth.verify_password
 def verify_password(username, password):
