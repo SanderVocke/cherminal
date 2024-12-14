@@ -25,7 +25,7 @@ if password_file:
     with open(password_file, 'r') as f:
         for line in f:
             user, pwd_hash = line.strip().split(':')
-            users[user] = generate_password_hash(pwd_hash)
+            users[user] = pwd_hash
 
 @auth.verify_password
 def verify_password(username, password):
