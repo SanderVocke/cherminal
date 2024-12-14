@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, Response
 import subprocess
 
 app = Flask(__name__)
@@ -7,19 +7,19 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/execute', methods=['POST'])
+@app.route('/execute', methods=['GET'])
 def execute():
-    command = request.form.get('command')
+    command = request.args.get('command')
     process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-    output = ""
-    while True:
-        line = process.stdout.readline()
-        if not line and process.poll() is not None:
-            break
-        if line:
-            output += line
-            yield f"data: {line}\n\n"
-    return jsonify({'output': output})
+    def generate():
+        while True:
+            line = process.stdout.readline()
+            if not line and process.poll() is not None:
+                break
+            if line:
+                yield f"data: {line}\n\n"
+
+    return Response(generate(), mimetype='text/event-stream')
 
 if __name__ == '__main__':
     app.run(debug=True)
