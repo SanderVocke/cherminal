@@ -42,8 +42,9 @@ def exit_server():
         func()
 
 @app.route('/')
-@auth.login_required
 def index():
+    if password_file:
+        return auth.login_required(lambda: render_template('index.html', command=command, debug_mode=debug_mode))()
     return render_template('index.html', command=command, debug_mode=debug_mode)
 
 
