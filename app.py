@@ -33,6 +33,10 @@ def verify_password(username, password):
         return username
     return None
 
+@auth.error_handler
+def unauthorized():
+    return render_template('unauthorized.html'), 401
+
 app = Flask(__name__)
 
 def exit_server():
