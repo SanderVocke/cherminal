@@ -27,17 +27,14 @@
             .then(response => {
                 if (response.status === 204) {
                     outputDiv.innerHTML += `<div><strong>Input sent to running command:</strong> ${command}</div>`;
-                } else {
-                    if (response.status === 204) {
-                        const eventSource = new EventSource('/execute');
-                        eventSource.onmessage = function(event) {
-                            outputDiv.innerHTML += `<div>${event.data}</div>`;
-                            outputDiv.scrollTop = outputDiv.scrollHeight;
-                        };
-                        eventSource.onerror = function() {
-                            eventSource.close();
-                        };
-                    }
+                }
+                const eventSource = new EventSource('/execute');
+                eventSource.onmessage = function(event) {
+                    outputDiv.innerHTML += `<div>${event.data}</div>`;
+                    outputDiv.scrollTop = outputDiv.scrollHeight;
+                };
+                eventSource.onerror = function() {
+                    eventSource.close();
                 }
             });
         }
