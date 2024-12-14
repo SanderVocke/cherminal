@@ -30,7 +30,9 @@ if password_file:
 @auth.verify_password
 def verify_password(username, password):
     if username in users and check_password_hash(users[username], password):
+        print(f"Authentication successful for user: {username}")
         return username
+    print(f"Authentication failed for user: {username}")
     return None
 
 @auth.error_handler
