@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shell Command Executor</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #output { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; }
+        #command { width: 100%; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Shell Command Executor</h1>
+    <div id="output"></div>
+    <input type="text" id="command" placeholder="Enter command" autofocus>
+    <script>
+        const outputDiv = document.getElementById('output');
+        const commandInput = document.getElementById('command');
+
+        commandInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const command = commandInput.value;
+                fetch('/execute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ 'command': command })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    outputDiv.innerHTML += `<div><strong>$ ${command}</strong></div><div>${data.output.replace(/\n/g, '<br>')}</div>`;
+                    outputDiv.scrollTop = outputDiv.scrollHeight;
+                    commandInput.value = '';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
