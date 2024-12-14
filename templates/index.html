@@ -43,6 +43,8 @@
         const outputDiv = document.getElementById('output');
         const commandInput = document.getElementById('command');
 
+        const debugMode = {{ 'true' if debug_mode else 'false' }};
+        
         function executeCommand(command) {
             fetch('/execute', {
                 method: 'POST',
@@ -51,7 +53,9 @@
             })
             .then(response => {
                 if (response.status === 204) {
-                    outputDiv.innerHTML += `<div><strong>Input sent to running command:</strong> ${command}</div>`;
+                    if (debugMode) {
+                        outputDiv.innerHTML += `<div><strong>Input sent to running command:</strong> ${command}</div>`;
+                    }
                 }
                 const eventSource = new EventSource('/execute');
                 eventSource.onmessage = function(event) {

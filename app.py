@@ -22,7 +22,7 @@ def exit_server():
 
 @app.route('/')
 def index():
-    return render_template('index.html', command=command)
+    return render_template('index.html', command=command, debug_mode=debug_mode)
 
 
 @app.route('/execute', methods=['POST', 'GET'])
