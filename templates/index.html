@@ -19,14 +19,25 @@
         const commandInput = document.getElementById('command');
 
         function executeCommand(command) {
-            const eventSource = new EventSource(`/execute?command=${encodeURIComponent(command)}`);
-            eventSource.onmessage = function(event) {
-                outputDiv.innerHTML += `<div>${event.data}</div>`;
-                outputDiv.scrollTop = outputDiv.scrollHeight;
-            };
-            eventSource.onerror = function() {
-                eventSource.close();
-            };
+            fetch('/execute', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ 'command': command })
+            })
+            .then(response => {
+                if (response.status === 204) {
+                    outputDiv.innerHTML += `<div><strong>Input sent to running command:</strong> ${command}</div>`;
+                } else {
+                    const eventSource = new EventSource('/execute');
+                    eventSource.onmessage = function(event) {
+                        outputDiv.innerHTML += `<div>${event.data}</div>`;
+                        outputDiv.scrollTop = outputDiv.scrollHeight;
+                    };
+                    eventSource.onerror = function() {
+                        eventSource.close();
+                    };
+                }
+            });
         }
 
         commandInput.addEventListener('keypress', function (e) {
