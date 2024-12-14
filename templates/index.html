@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shell Command Executor</title>
+    <title>Termchat</title>
     <style>
         body { font-family: Arial, sans-serif; }
         #output { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; }
@@ -11,7 +11,8 @@
     </style>
 </head>
 <body>
-    <h1>Shell Command Executor</h1>
+    <h1>Termchat</h1>
+    <h2>Main process: {{ command }}</h2>
     <div id="output"></div>
     <input type="text" id="command" placeholder="Enter command" autofocus>
     <script>
