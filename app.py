@@ -9,12 +9,19 @@ def index():
 
 process = None
 
-@app.route('/execute', methods=['POST'])
+@app.route('/execute', methods=['POST', 'GET'])
 def execute():
     global process
-    command = request.form.get('command')
-    if process is None or process.poll() is not None:
-        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, text=True)
+    if request.method == 'POST':
+        command = request.form.get('command')
+        if process is None or process.poll() is not None:
+            process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, text=True)
+            return '', 204
+        else:
+            process.stdin.write(command + '\n')
+            process.stdin.flush()
+            return '', 204
+    else:
         def generate():
             while True:
                 line = process.stdout.readline()
@@ -23,10 +30,6 @@ def execute():
                 if line:
                     yield f"data: {line}\n\n"
         return Response(generate(), mimetype='text/event-stream')
-    else:
-        process.stdin.write(command + '\n')
-        process.stdin.flush()
-        return '', 204
 
 if __name__ == '__main__':
     app.run(debug=True)
