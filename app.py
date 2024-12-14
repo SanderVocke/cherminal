@@ -35,6 +35,8 @@ def verify_password(username, password):
 
 @auth.error_handler
 def unauthorized():
+    if request.authorization:
+        return render_template('unauthorized.html'), 401
     return render_template('unauthorized.html'), 401
 
 app = Flask(__name__)
