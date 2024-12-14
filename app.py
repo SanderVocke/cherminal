@@ -10,11 +10,16 @@ def index():
 @app.route('/execute', methods=['POST'])
 def execute():
     command = request.form.get('command')
-    try:
-        result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
-    except subprocess.CalledProcessError as e:
-        result = e.output
-    return jsonify({'output': result})
+    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    output = ""
+    while True:
+        line = process.stdout.readline()
+        if not line and process.poll() is not None:
+            break
+        if line:
+            output += line
+            yield f"data: {line}\n\n"
+    return jsonify({'output': output})
 
 if __name__ == '__main__':
     app.run(debug=True)
