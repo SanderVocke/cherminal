@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, Response, abort
 from flask_httpauth import HTTPBasicAuth
-from werkzeug.security import generate_password_hash, check_password_hash
+from passlib.apache import HtpasswdFile
 import subprocess
 import sys
 import argparse
@@ -11,25 +11,19 @@ parser.add_argument('-d', '--debug', action='store_true', help='Enable debug mod
 parser.add_argument('--password', help='Path to htpasswd file for basic authentication.')
 args = parser.parse_args()
 
-password_file = args.password
-
 command = args.command
 debug_mode = args.debug
 process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, text=True)
 
 auth = HTTPBasicAuth()
-
-users = {}
-
-if password_file:
-    with open(password_file, 'r') as f:
-        for line in f:
-            user, pwd_hash = line.strip().split(':')
-            users[user] = pwd_hash
+password_file = HtpasswdFile(args.password) if args.password else None
 
 @auth.verify_password
 def verify_password(username, password):
-    if username in users and check_password_hash(users[username], password):
+    if not password_file:
+        print("No password file provided. Skipping authentication.")
+        return True
+    if password_file.check_password(username, password):
         print(f"Authentication successful for user: {username}")
         return username
     print(f"Authentication failed for user: {username}")
@@ -52,7 +46,9 @@ def exit_server():
 @app.route('/')
 def index():
     if password_file:
+        print("Basic authentication enabled.")
         return auth.login_required(lambda: render_template('index.html', command=command, debug_mode=debug_mode))()
+    print("Basic authentication not enabled.")
     return render_template('index.html', command=command, debug_mode=debug_mode)
 
 
