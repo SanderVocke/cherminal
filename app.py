@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request, Response
 import subprocess
 import sys
+import argparse
 
-if len(sys.argv) < 2:
-    print("Usage: python app.py <command>")
-    sys.exit(1)
+parser = argparse.ArgumentParser(description='Run a subprocess and handle input/output.')
+parser.add_argument('-c', '--command', required=True, help='The command to run as a subprocess.')
+parser.add_argument('-d', '--debug', action='store_true', help='Enable debug mode.')
+args = parser.parse_args()
 
-command = sys.argv[1]
+command = args.command
+debug_mode = args.debug
 process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, text=True)
 
 app = Flask(__name__)
@@ -27,6 +30,8 @@ def execute():
     global process
     if request.method == 'POST':
         command = request.form.get('command')
+        if debug_mode:
+            print(f"Input sent: {command}")
         process.stdin.write(command + '\n')
         process.stdin.flush()
         return '', 204
