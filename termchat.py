@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, Response, abort
+from flask import Flask, render_template, request, Response
 from flask_httpauth import HTTPBasicAuth
 from passlib.apache import HtpasswdFile
 import subprocess
-import sys
 import argparse
 
 parser = argparse.ArgumentParser(description='Run a shell process and host a webpage to "chat" with it.')

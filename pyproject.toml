@@ -7,7 +7,7 @@ name = "termchat"
 version = "0.1.0"
 description = "A web-based interface for interacting with a shell process."
 authors = [
-    { name = "Your Name", email = "your.email@example.com" }
+    { name = "Sander Vocke", email = "sandervocke@gmail.com" }
 ]
 license = { text = "MIT" }
 dependencies = [
