@@ -34,9 +34,10 @@ jobs:
       run: |
           python -m build
           echo "WHEEL=$(ls dist/*.whl)" >> $GITHUB_ENV
+          echo "WHEEL_FILENAME=$(basename $WHEEL)" >> $GITHUB_ENV
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.WHEEL }}
+        name: ${{ env.WHEEL_FILENAME }}
         path: ${{ env.WHEEL }}
