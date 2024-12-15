@@ -23,9 +23,9 @@ Termchat is a web-based interface for interacting with a shell process. It allow
    cd termchat
    ```
 
-2. Install the required Python packages:
+2. Install the package using pip:
    ```bash
-   pip install flask flask-httpauth passlib
+   pip install .
    ```
 
 ## Usage
