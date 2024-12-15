@@ -5,7 +5,7 @@ import subprocess
 import sys
 import argparse
 
-parser = argparse.ArgumentParser(description='Run a subprocess and handle input/output.')
+parser = argparse.ArgumentParser(description='Run a shell process and host a webpage to "chat" with it.')
 parser.add_argument('-c', '--command', required=True, help='The command to run as a subprocess.')
 parser.add_argument('-d', '--debug', action='store_true', help='Enable debug mode.')
 parser.add_argument('--password', help='Path to htpasswd file for basic authentication.')
