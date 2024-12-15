@@ -43,7 +43,7 @@ python termchat.py -c "<command>" [-d] [--password <htpasswd-file>]
 Example:
 
 ```bash
-python termchat.py -c "tail -f /var/log/syslog" --password /path/to/htpasswd
+python termchat.py -c "bash" --password /path/to/htpasswd
 ```
 
 ## Accessing the Web Interface
