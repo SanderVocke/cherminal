@@ -1,6 +1,6 @@
-# Termchat
+# Cherminal
 
-Termchat is a web-based interface for interacting with a shell process. It allows users to run a command as a subprocess and communicate with it through a web page. This can be useful for monitoring and interacting with long-running processes or for providing a simple web interface to command-line tools.
+Cherminal is a web-based interface for interacting with a shell process. It allows users to run a command as a subprocess and communicate with it through a web page. This can be useful for monitoring and interacting with long-running processes or for providing a simple web interface to command-line tools.
 
 Huge shout-out to the various available coding GPT LLMs and aider, which allowed building v0.1 of this tool in about an hour with hardly any manual coding. The reason behind developing this was also related: to be able to run aider from a web server persistently in order to make code changes with it on the go.
 
@@ -22,7 +22,7 @@ Huge shout-out to the various available coding GPT LLMs and aider, which allowed
 1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd termchat
+   cd cherminal
    ```
 
 2. Install the package using pip:
@@ -35,7 +35,7 @@ Huge shout-out to the various available coding GPT LLMs and aider, which allowed
 Run the application with the following command:
 
 ```bash
-python termchat.py -c "<command>" [-d] [--password <htpasswd-file>]
+python cherminal.py -c "<command>" [-d] [--password <htpasswd-file>]
 ```
 
 - `-c`, `--command`: The command to run as a subprocess.
@@ -45,12 +45,12 @@ python termchat.py -c "<command>" [-d] [--password <htpasswd-file>]
 Example:
 
 ```bash
-python termchat.py -c "bash" --password /path/to/htpasswd
+python cherminal.py -c "bash" --password /path/to/htpasswd
 ```
 
 ## Accessing the Web Interface
 
-Open a web browser and navigate to `http://localhost:5000` to access the Termchat interface.
+Open a web browser and navigate to `http://localhost:5000` to access the web interface.
 
 ## License
 
