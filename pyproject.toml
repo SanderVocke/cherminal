@@ -4,14 +4,21 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cherminal"
-version = "0.1.0"
+version = "0.1.1"
 description = "A web-based interface for interacting with a shell process."
 authors = [
     { name = "Sander Vocke", email = "sandervocke@gmail.com" }
 ]
 license = { text = "MIT" }
+
 dependencies = [
     "flask",
     "flask-httpauth",
     "passlib"
 ]
+
+[tool.setuptools.package-data]
+"cherminal" = ["templates/*.html"]
+
+[project.scripts]
+cherminal = "cherminal.cherminal:main"

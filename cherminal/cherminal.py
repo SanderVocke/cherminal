@@ -34,7 +34,9 @@ def unauthorized():
         return render_template('unauthorized.html'), 401
     return render_template('unauthorized.html'), 401
 
-app = Flask(__name__)
+import os
+
+app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
 def exit_server():
     print("Subprocess exited. Shutting down the server.")
@@ -73,5 +75,8 @@ def execute():
                     yield f"data: {line}\n\n"
         return Response(generate(), mimetype='text/event-stream')
 
-if __name__ == '__main__':
+def main():
     app.run(debug=True)
+
+if __name__ == '__main__':
+    main()
